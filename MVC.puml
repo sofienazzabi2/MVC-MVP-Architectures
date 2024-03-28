@@ -1,0 +1,87 @@
+@startuml
+package "Views" {
+    class UI_ScheduleAppointment {
+        {method} renderForm()
+    }
+    class UI_SignUp {
+        {method} renderForm()
+    }
+    class UI_Login {
+        {method} renderForm()
+    }
+    class UI_DisplayCertificate {
+        {method} displayCertif(File certif)
+    }
+    class UI_DisplayAppointment {
+        {method} displayAppointmentInfo(Appointment appointment)
+    }
+    class UI_ConsultCenters {
+        {method} displayCenterInfo(Center center)
+    }
+}
+
+package "Controllers" {
+    class C_Center {
+        {method} Center[] getCenters()
+    }
+    class C_Appointment {
+        {method} Appointment[] getAppointments(User user)
+        {method} bookAppointment(User user)
+    }
+    class C_SignUp {
+        {method} User signUp(credentials)
+    }
+    class C_Login {
+        {method} login(User user)
+    }
+    class C_Certificate {
+        {method} Certificate[] getCertificates(User user)
+    }
+}
+
+package "Models" {
+    class User {
+        String id
+        String firstname
+        String lastname
+        String email
+        String password
+        String dateOfBirth
+        String phoneNumber
+    }
+    class Appointment {
+        String id
+        String date
+    }
+    class Center {
+        String id
+        String name
+        String adress
+    }
+    class Vaccin {
+        String id
+        String description
+    }
+    class Certificate {
+        String id
+        String path
+    }
+}
+
+C_Center -- UI_ConsultCenters
+C_Appointment -- UI_DisplayAppointment
+C_Appointment -- UI_ScheduleAppointment
+C_Login -- UI_Login
+C_SignUp -- UI_SignUp
+C_Certificate -- UI_DisplayCertificate
+User -- C_Login
+User -- C_SignUp
+Certificate -- C_Certificate
+Appointment -- C_Appointment
+Center -- C_Center
+Certificate "1"--"1" User
+Appointment "*"--"1" User
+Appointment "*"--"1" Vaccin
+Appointment "*"--"1" Center
+Appointment "1"--"1" Certificate
+@enduml
