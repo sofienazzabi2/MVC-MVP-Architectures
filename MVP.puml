@@ -1,0 +1,104 @@
+@startuml
+package "Views" {
+    class UI_ScheduleAppointment {
+        {method} renderForm()
+    }
+    class UI_WelcomeScreen {
+        {method} displayStatistics()
+    }
+    class UI_SignUp {
+        {method} renderForm()
+    }
+    class UI_Login {
+        {method} renderForm()
+    }
+    class UI_DisplayCertificate {
+        {method} displayCertif(File certif)
+    }
+    class UI_DisplayAppointment {
+        {method} displayAppointmentInfo(Appointment appointment)
+    }
+    class UI_ConsultCenters {
+        {method} displayCenterInfo(Center center)
+    }
+    class UI_NotifyPanel {
+        {method} displayNotification()
+    }
+}
+
+package "Presenters" {
+    class P_SendNotifications {
+        {method} reminder(Appointment appointment, Center center)
+        {method} reschedule(Appointment appointment, Center center)
+    }
+    class P_Center {
+        {method} Center[] getCenters()
+    }
+    class P_Appointment {
+        {method} Appointment[] getAppointments(User user)
+        {method} bookAppointment(User user)
+    }
+    class P_SignUp {
+        {method} User signUp(credentials)
+    }
+    class P_Login {
+        {method} login(User user)
+    }
+    class P_Certificate {
+        {method} Certificate[] getCertificates(User user)
+    }
+    class P_WelcomeScreen {
+        {method} getStatistics()
+    }
+}
+
+package "Models" {
+    class User {
+        String id
+        String firstname
+        String lastname
+        String email
+        String password
+        String dateOfBirth
+        String phoneNumber
+    }
+    class Appointment {
+        String id
+        String date
+    }
+    class Center {
+        String id
+        String name
+        String address
+    }
+    class Vaccin {
+        String id
+        String description
+    }
+    class Certificate {
+        String id
+        String path
+    }
+}
+
+P_Center -- UI_ConsultCenters
+P_Appointment -- UI_DisplayAppointment
+P_Appointment -- UI_ScheduleAppointment
+P_Login -- UI_Login
+P_SignUp -- UI_SignUp
+P_Certificate -- UI_DisplayCertificate
+User -- P_Login
+User -- P_SignUp
+Certificate -- P_Certificate
+Appointment -- P_Appointment
+Center -- P_Center
+Certificate "1"--"1" User
+Appointment "*"--"1" User
+Appointment "*"--"1" Vaccin
+Appointment "*"--"1" Center
+Appointment "1"--"1" Certificate
+UI_NotifyPanel -- P_SendNotifications
+P_SendNotifications -- Appointment
+UI_WelcomeScreen -- P_WelcomeScreen
+P_WelcomeScreen -- Models
+@enduml
